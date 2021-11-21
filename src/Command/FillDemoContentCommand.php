@@ -37,7 +37,7 @@ class FillDemoContentCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $recipesNum = 10;
+        $recipesNum = 1000;
 
         $progressBar = new ProgressBar($output, $recipesNum);
         $faker = $this->faker;
@@ -60,7 +60,6 @@ class FillDemoContentCommand extends Command
             $units[] = $amountUnit = new AmountUnit();
             $amountUnit->setName($unit);
             $entityManager->persist($amountUnit);
-            $entityManager->flush();
         }
 
         // Авторов делаем в десять раз меньше чем рецептов
@@ -76,7 +75,6 @@ class FillDemoContentCommand extends Command
                 $author->setPhone($faker->phoneNumber());
             }
             $entityManager->persist($author);
-            $entityManager->flush();
         }
 
         $i = 0;
@@ -89,7 +87,6 @@ class FillDemoContentCommand extends Command
             $recipe->setDescription($faker->text(1000));
 
             $entityManager->persist($recipe);
-            $entityManager->flush();
 
             // Добавляем ингредиенты
             $ingredientsNum = rand(5, 15);
@@ -101,8 +98,8 @@ class FillDemoContentCommand extends Command
                 $ingredient->setAmountUnit($units[rand(0, count($units)-1)]);
                 $ingredient->setRecipe($recipe);
                 $entityManager->persist($ingredient);
-                $entityManager->flush();
             }
+            $entityManager->flush();
             $progressBar->advance();
         }
         $progressBar->finish();

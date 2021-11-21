@@ -1,5 +1,37 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-test twig {{ var }}
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            {% for recipe in recipes %}
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://mdbootstrap.com/img/new/standard/city/062.jpg" class="card-img-top" alt="..."/>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ recipe.name }}</h5>
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of the
+                                card's content.
+                            </p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            {% for ingredient in recipe.ingredients %}
+                                <li class="list-group-item">
+                                    {{ ingredient.name }} - {{ ingredient.amount }} {{ ingredient.amountUnit.name }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="card-body">
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                        <div class="card-footer">
+
+                            <small class="text-muted">Cooking time {{ recipe.cookingTime }} min.</small>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
