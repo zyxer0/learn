@@ -8,7 +8,7 @@ services:
     depends_on:
       - learning-php-fpm
     ports:
-      - 80:80
+      - "80:80"
     volumes:
       - .:/var/www/html
       - ./dev/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
@@ -22,7 +22,7 @@ services:
     links:
       - learning-mysql
     ports:
-      - 9000:9000
+      - "9000:9000"
     volumes:
       - .:/var/www/html
       - ./dev/php-fpm/php.ini:/usr/local/etc/php/php.ini
@@ -33,7 +33,7 @@ services:
     networks:
       - learning-network
     ports:
-      - 3306:3306
+      - "3306:3306"
     environment:
       - MYSQL_DATABASE=demo
       - MYSQL_ROOT_PASSWORD=root
@@ -42,6 +42,21 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     volumes:
       - ./dev/mysql/data:/var/lib/mysql
+  learning-sphinxsearch:
+    image: macbre/sphinxsearch:latest
+    container_name: learning-sphinxsearch
+    networks:
+      - learning-network
+    depends_on:
+      - learning-mysql
+    ports:
+      - "9306:9306"
+      - "9312:9312"
+    volumes:
+      - ./dev/sphinx/conf/sphinx.conf:/opt/sphinx/conf/sphinx.conf
+      - ./dev/sphinx/conf/indexes/:/opt/sphinx/conf/indexes/
+      - ./dev/sphinx/logs/:/var/log/sphinx/
+      - ./dev/sphinx/indexes/:/opt/sphinx/index/
 
 networks:
   learning-network:
